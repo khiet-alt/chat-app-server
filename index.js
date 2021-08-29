@@ -13,10 +13,6 @@ const io = require('socket.io')(server, {
       origin: '*',
     }
   });
-  
-app.use(cors({
-    origin: '*'
-}))
 
 io.on("connection", (socket) => {
     console.log("New connection")
