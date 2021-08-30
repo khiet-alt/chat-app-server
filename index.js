@@ -12,6 +12,8 @@ const io = require('socket.io')(server, {
       origin: '*',
     }
   });
+  
+app.use(router)     // use as middleware
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js')
 
@@ -22,7 +24,7 @@ io.on("connection", (socket) => {   // socket in here(socket instance) indicates
             return callback(error)
         socket.join(room)
 
-        socket.emit('message', { user: 'admin', text: `${name}, welcome to room ${room}.`});
+        socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
         socket.broadcast.to(room).emit('message', { user: 'admin', text: `${name} has joined!` });
 
         callback()
@@ -44,7 +46,6 @@ io.on("connection", (socket) => {   // socket in here(socket instance) indicates
     })
 })
 
-app.use(router)     // use as middleware
 
 server.listen(PORT, () => {
     console.log(`Server has started on ${PORT}`)
